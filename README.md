@@ -9,3 +9,11 @@ docker exec -it mariadb mysql -u user -p
 Lister les users :
 
 SELECT User, Host FROM mysql.user;
+
+Choisir la base de données :
+
+USE inception_db;
+
+Lister les tables de la base :
+
+SHOW TABLES;
