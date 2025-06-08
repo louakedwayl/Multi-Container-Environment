@@ -1,0 +1,17 @@
+[mysqld]
+# Répertoire où sont stockées les données de la base (bases, tables, logs)
+datadir = /var/lib/mysql
+
+# Chemin du socket Unix utilisé pour la connexion locale au serveur MariaDB
+socket  = /run/mysqld/mysqld.sock
+
+# Adresse IP sur laquelle MariaDB écoute les connexions
+# '*' signifie qu'il accepte les connexions sur toutes les interfaces réseau
+bind_address=*
+
+# Port TCP sur lequel MariaDB écoute (3306 par défaut)
+port = 3306
+
+# L'utilisateur système sous lequel tourne le serveur MariaDB
+user = mysql
+
