@@ -29,7 +29,8 @@ RUN openssl req -x509 -nodes -days 365 \
 EXPOSE 80 443
 # Indique que le conteneur écoute sur les ports 80 et 443
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["sh", "-c", "until getent hosts wordpress; do echo 'Waiting for wordpress...'; sleep 2; done && nginx -g 'daemon off;'"]
+
 # Démarre nginx en mode non daemonisé (en avant-plan) pour que le conteneur reste actif
 
 #sudo docker run -d --name mon_nginx -p 8080:80 -p 4443:443 nginx:1.0

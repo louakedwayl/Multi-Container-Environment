@@ -1,12 +1,16 @@
 #!/bin/bash
+set -e
 
-echo "ADMIN_USER=$ADMIN_USER"
-echo "ADMIN_PASSWORD=$ADMIN_PASSWORD"
 
-sleep 10
+# Attendre que MariaDB soit accessible
+until mysql -h "$DB_HOST" -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" -e "SELECT 1;" > /dev/null 2>&1; do
+  echo "⏳ Attente de la base de données..."
+  sleep 2
+done
+
+echo "✅ Base de données accessible."
 
 if [ ! -f "$WP_PATH/wp-config.php" ]; then
-    # Installer WordPress seulement si pas encore configuré
     if [ ! -d "$WP_PATH/wp-includes" ]; then
         echo "⬇️ Téléchargement de WordPress..."
         wp core download --path="$WP_PATH" --allow-root
@@ -22,33 +26,41 @@ if [ ! -f "$WP_PATH/wp-config.php" ]; then
         --skip-check \
         --allow-root
 
-    echo "⚠️ WordPress téléchargé et configuré, mais pas installé !"
+    # Installer WP seulement si pas déjà installé
+    if ! wp core is-installed --path="$WP_PATH" --allow-root; then
+        echo "🚀 Installation automatique de WordPress..."
+        wp core install \
+            --path="$WP_PATH" \
+            --url="https://wlouaked.42.fr" \
+            --title="Mon Site" \
+            --admin_user="$ADMIN_USER" \
+            --admin_password="$ADMIN_PASSWORD" \
+            --admin_email="$ADMIN_EMAIL" \
+            --skip-email \
+            --allow-root
+    fi
 else
     echo "ℹ️ WordPress est déjà configuré."
 fi
 
-# Vérifier si WP est installé (présence de tables dans la base)
 if wp core is-installed --path="$WP_PATH" --allow-root; then
     echo "✅ WordPress est installé, vérification des utilisateurs..."
 
-    # Créer utilisateur maya si absent
-    if ! wp user get maya --allow-root --path="$WP_PATH" > /dev/null 2>&1; then
-        wp user create maya maya@student.42.fr --role=administrator --user_pass=mya222 --allow-root --path="$WP_PATH"
-        echo "✅ Utilisateur maya créé."
+    if ! wp user get "$ADMIN_USER" --allow-root --path="$WP_PATH" > /dev/null 2>&1; then
+        wp user create "$ADMIN_USER" "$ADMIN_USER@student.42.fr" --role=administrator --user_pass="$ADMIN_PASSWORD" --allow-root --path="$WP_PATH"
+        echo "✅ Utilisateur $ADMIN_USER créé."
     else
-        echo "ℹ️ Utilisateur maya déjà existant."
+        echo "ℹ️ Utilisateur $ADMIN_USER déjà existant."
     fi
 
-    # Créer utilisateur wayl si absent
-    if ! wp user get wayl --allow-root --path="$WP_PATH" > /dev/null 2>&1; then
-        wp user create wayl wayl@student.42.fr --role=author --user_pass=waylpass --allow-root --path="$WP_PATH"
-        echo "✅ Utilisateur wayl créé."
+    if ! wp user get "$WAYL_USER" --allow-root --path="$WP_PATH" > /dev/null 2>&1; then
+        wp user create "$WAYL_USER" "$WAYL_USER@student.42.fr" --role=author --user_pass="$WAYL_PASSWORD" --allow-root --path="$WP_PATH"
+        echo "✅ Utilisateur $WAYL_USER créé."
     else
-        echo "ℹ️ Utilisateur wayl déjà existant."
+        echo "ℹ️ Utilisateur $WAYL_USER déjà existant."
     fi
-
 else
-    echo "⚠️ WordPress n'est pas installé. Merci d'installer manuellement via wp core install."
+    echo "⚠️ WordPress n'est pas installé."
 fi
 
 if wp user get admin --allow-root --path="$WP_PATH" > /dev/null 2>&1; then

@@ -9,9 +9,6 @@ RUN apt-get update && apt-get install -y mariadb-server \
 # Copie la configuration personnalisée de MariaDB dans le dossier de configuration
 COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
-# Copie le script SQL d'initialisation dans la racine du container
-COPY ./tools/init.sql /init.sql
-
 # Copie le script d'entrée (entrypoint) et rend ce script exécutable
 COPY ./tools/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
