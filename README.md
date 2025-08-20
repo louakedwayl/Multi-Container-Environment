@@ -2,22 +2,33 @@
 
 Ce projet a pour but d’approfondir vos connaissances en vous faisant utiliser Docker. Vous allez virtualiser plusieurs images Docker en les créant dans votre nouvelle machine virtuelle personnelle.
 
-## Créer plusieurs conteneurs Docker :
+## 🛠️ Conteneurs à créer
 
-### Un conteneur NGINX (serveur web, avec SSL/TLS).
+- **NGINX**
+  - Serveur web
+  - Avec **SSL/TLS**
 
-### Un conteneur WordPress (site web dynamique).
+- **WordPress**
+  - Site web dynamique
 
-### Un conteneur MariaDB (base de données).
+- **MariaDB**
+  - Base de données
 
-## Les connecter dans un réseau Docker privé pour qu’ils puissent échanger entre eux.
+---
 
-## Stocker les données (WordPress et MariaDB) dans des volumes persistants pour ne pas perdre tes infos quand tu arrêtes les conteneurs.
+## 🔗 Réseau
 
-## Automatiser le tout avec docker-compose.yml.
+- Connecter les conteneurs dans un **réseau Docker privé**  
+- Permettre aux services d’échanger entre eux
 
-## Gérer quelques contraintes supplémentaires (droits utilisateurs, gestion des images, sécurité, etc.).
+---
 
+## 💾 Persistance des données
+
+- Stocker les données de :
+  - **WordPress**
+  - **MariaDB**
+- Utiliser des **volumes persistants** pour éviter toute perte lors de l’arrêt des conteneurs
 
 ### installation
 
