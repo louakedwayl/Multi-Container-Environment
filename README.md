@@ -1,34 +1,34 @@
-# inception
+# Multi-Container-Environment
 
-Ce projet a pour but d’approfondir vos connaissances en vous faisant utiliser Docker. Vous allez virtualiser plusieurs images Docker en les créant dans votre nouvelle machine virtuelle personnelle.
+## Introduction
 
-## 🛠️ Conteneurs à créer
+Docker is a containerization platform that allows you to package applications and their dependencies into isolated and portable containers. This technology has revolutionized application deployment by ensuring they run identically regardless of the execution environment.
+The goal of this project is to create a complete web services infrastructure using Docker and Docker Compose. I had to set up multiple containers that communicate with each other to form a cohesive system: an NGINX web server configured with TLS, a MariaDB database, and a functional WordPress site with php-fpm.
+Each service runs in its own container, built from the penultimate stable version of Alpine or Debian. All these services are orchestrated via Docker Compose, and data is persisted through Docker volumes.
 
-- **NGINX**
-  - Serveur web
-  - Avec **SSL/TLS**
+## 🛠️ Containers to create
 
-- **WordPress**
-  - Site web dynamique
+```bash
+    NGINX
+        Web server
+        With SSL/TLS
+    WordPress
+        Dynamic website
+    MariaDB
+        Database
+```
 
-- **MariaDB**
-  - Base de données
+## 🔗 Network
 
----
+Connect containers in a private Docker network
+Allow services to communicate with each other
 
-## 🔗 Réseau
+💾 Data persistence
 
-- Connecter les conteneurs dans un **réseau Docker privé**  
-- Permettre aux services d’échanger entre eux
-
----
-
-## 💾 Persistance des données
-
-- Stocker les données de :
-  - **WordPress**
-  - **MariaDB**
-- Utiliser des **volumes persistants** pour éviter toute perte lors de l’arrêt des conteneurs
+Store data from:
+WordPress
+MariaDB
+Use persistent volumes to prevent any loss when stopping containers
 
 ### installation
 
@@ -36,19 +36,19 @@ Ce projet a pour but d’approfondir vos connaissances en vous faisant utiliser 
 make
 ```
 
-### Pour se connecter a la database :
+### To connect to the database:
 
 ```bash
 docker exec -it mariadb mysql -u user -p
 ```
 
-### Choisir la base de données :
+### Select the database:
 
 ```bash
 USE inception_db;
 ```
 
-### Lister les tables de la base :
+### List the tables in the database:
 
 ```bash
 SHOW TABLES;
